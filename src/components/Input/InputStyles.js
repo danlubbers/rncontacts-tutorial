@@ -14,6 +14,7 @@ export default StyleSheet.create({
     paddingHorizontal: 5,
   },
   textInput: {
+    width: '100%',
     flex: 1,
   },
   error: {
