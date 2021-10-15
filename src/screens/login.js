@@ -1,8 +1,7 @@
-import React, {useState} from 'react';
+import React from 'react';
 import LoginComponent from '../components/Login/Login';
 
 const Login = () => {
-  const [isText, setIsText] = useState('');
   return <LoginComponent />;
 };
 
