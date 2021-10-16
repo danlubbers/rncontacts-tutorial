@@ -1,14 +1,12 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useContext} from 'react';
 import RegisterComponent from '../components/Register/Register';
-import axiosInstance from '../helpers/axiosInterceptor';
+import registerContext from '../context/actions/registerContext';
+import {GlobalContext} from '../context/Provider';
 
 const Register = () => {
   const [form, setForm] = useState({});
-  const [error, setError] = useState({});
-
-  useEffect(() => {
-    axiosInstance.post('/contacts').catch(err => console.log(err));
-  }, []);
+  const [errors, setErrors] = useState({});
+  const {authState, authDispatch} = useContext(GlobalContext);
 
   const onChange = ({name, value}) => {
     setForm({...form, [name]: value});
@@ -16,19 +14,19 @@ const Register = () => {
     // Remove errors after user inputs information
     if (value !== '') {
       if (name === 'password' && value.length < 6) {
-        setError(prev => {
+        setErrors(prev => {
           return {
             ...prev,
             [name]: 'This field requires a minimum of 6 characters!',
           };
         });
       } else {
-        setError(prev => {
+        setErrors(prev => {
           return {...prev, [name]: null};
         });
       }
     } else {
-      setError(prev => {
+      setErrors(prev => {
         return {...prev, [name]: `${name} field is required!`};
       });
     }
@@ -37,29 +35,37 @@ const Register = () => {
   const onSubmit = () => {
     // Validations
     if (!form.username) {
-      setError(prev => {
+      setErrors(prev => {
         return {...prev, username: 'Please add a username!'};
       });
     }
     if (!form.firstName) {
-      setError(prev => {
+      setErrors(prev => {
         return {...prev, firstName: 'Please add your First Name!'};
       });
     }
     if (!form.lastName) {
-      setError(prev => {
+      setErrors(prev => {
         return {...prev, lastName: 'Please add your Last Name!'};
       });
     }
     if (!form.email) {
-      setError(prev => {
+      setErrors(prev => {
         return {...prev, email: 'Please add your email address!'};
       });
     }
     if (!form.password) {
-      setError(prev => {
+      setErrors(prev => {
         return {...prev, password: 'Please add your password!'};
       });
+    }
+
+    if (
+      Object.values(form).length === 5 &&
+      Object.values(form).every(item => item.trim().length > 0) &&
+      Object.values(errors).every(item => !item)
+    ) {
+      registerContext(form)(authDispatch);
     }
   };
 
@@ -68,7 +74,9 @@ const Register = () => {
       onSubmit={onSubmit}
       onChange={onChange}
       form={form}
-      error={error}
+      errors={errors}
+      error={authState.error}
+      loading={authState.loading}
     />
   );
 };

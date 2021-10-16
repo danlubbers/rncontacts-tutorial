@@ -7,8 +7,16 @@ import Container from '../Container/Container';
 import Input from '../Input/Input';
 import CustomButton from '../CustomButton/CustomButton';
 
-const RegisterComponent = ({onSubmit, onChange, form, error}) => {
+const RegisterComponent = ({
+  onSubmit,
+  onChange,
+  form,
+  loading,
+  error,
+  errors,
+}) => {
   const {navigate} = useNavigation();
+
   return (
     <Container>
       <Image
@@ -22,6 +30,7 @@ const RegisterComponent = ({onSubmit, onChange, form, error}) => {
         <Text style={styles.subTitle}>Create a free account</Text>
 
         <View style={styles.form}>
+          {error?.error && <Text>{error.error}</Text>}
           <Input
             label="Username"
             placeholder="Enter Username"
@@ -29,7 +38,7 @@ const RegisterComponent = ({onSubmit, onChange, form, error}) => {
             onChangeText={value => {
               onChange({name: 'username', value});
             }}
-            error={error.username}
+            error={errors.username || error?.username?.[0]}
           />
           <Input
             label="First Name"
@@ -38,7 +47,7 @@ const RegisterComponent = ({onSubmit, onChange, form, error}) => {
             onChangeText={value => {
               onChange({name: 'firstName', value});
             }}
-            error={error.firstName}
+            error={errors.firstName || error?.firstName?.[0]}
           />
           <Input
             label="Last Name"
@@ -47,7 +56,7 @@ const RegisterComponent = ({onSubmit, onChange, form, error}) => {
             onChangeText={value => {
               onChange({name: 'lastName', value});
             }}
-            error={error.lastName}
+            error={errors.lastName || error?.lastName?.[0]}
           />
           <Input
             label="Email"
@@ -56,7 +65,7 @@ const RegisterComponent = ({onSubmit, onChange, form, error}) => {
             onChangeText={value => {
               onChange({name: 'email', value});
             }}
-            error={error.email}
+            error={errors.email || error?.email?.[0]}
           />
 
           <Input
@@ -68,10 +77,16 @@ const RegisterComponent = ({onSubmit, onChange, form, error}) => {
             onChangeText={value => {
               onChange({name: 'password', value});
             }}
-            error={error.password}
+            error={errors.password || error?.password?.[0]}
           />
         </View>
-        <CustomButton onPress={onSubmit} secondary title="Submit" />
+        <CustomButton
+          loading={loading}
+          disabled={loading}
+          onPress={onSubmit}
+          secondary
+          title="Submit"
+        />
 
         <View style={styles.createSection}>
           <Text style={styles.infoText}>Already have an account</Text>
