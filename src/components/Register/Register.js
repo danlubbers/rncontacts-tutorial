@@ -16,7 +16,7 @@ const RegisterComponent = ({
   errors,
 }) => {
   const {navigate} = useNavigation();
-
+  console.log('REGISTRATION ERROR', error);
   return (
     <Container>
       <Image
@@ -47,7 +47,7 @@ const RegisterComponent = ({
             onChangeText={value => {
               onChange({name: 'firstName', value});
             }}
-            error={errors.firstName || error?.firstName?.[0]}
+            error={errors.firstName || error?.first_name?.[0]}
           />
           <Input
             label="Last Name"
@@ -56,7 +56,7 @@ const RegisterComponent = ({
             onChangeText={value => {
               onChange({name: 'lastName', value});
             }}
-            error={errors.lastName || error?.lastName?.[0]}
+            error={errors.lastName || error?.last_name?.[0]}
           />
           <Input
             label="Email"

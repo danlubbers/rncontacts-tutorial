@@ -3,7 +3,14 @@ import {
   REGISTER_LOADING,
   REGISTER_SUCCESS,
   REGISTER_FAIL,
+  CLEAR_AUTH_STATE,
 } from '../../constants/actionTypes';
+
+export const clearAuthState = () => dispatch => {
+  dispatch({
+    type: CLEAR_AUTH_STATE,
+  });
+};
 
 export default ({
     username,
@@ -15,7 +22,7 @@ export default ({
   dispatch => {
     dispatch({type: REGISTER_LOADING});
     axiosInstance
-      .post('auth/register', {
+      .post('api/auth/register', {
         username,
         first_name,
         last_name,

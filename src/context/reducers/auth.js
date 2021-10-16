@@ -2,6 +2,7 @@ import {
   REGISTER_LOADING,
   REGISTER_SUCCESS,
   REGISTER_FAIL,
+  CLEAR_AUTH_STATE,
 } from '../../constants/actionTypes';
 
 const auth = (state, {type, payload}) => {
@@ -25,6 +26,13 @@ const auth = (state, {type, payload}) => {
         ...state,
         loading: false,
         error: payload,
+      };
+    case CLEAR_AUTH_STATE:
+      return {
+        ...state,
+        loading: false,
+        data: null,
+        error: null,
       };
 
     default:
