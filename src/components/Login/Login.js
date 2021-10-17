@@ -4,6 +4,7 @@ import styles from './LoginStyles';
 import {useNavigation} from '@react-navigation/native';
 import {REGISTER} from '../../constants/routeNames';
 import Container from '../Container/Container';
+import Message from '../Message/Message';
 import Input from '../Input/Input';
 import CustomButton from '../CustomButton/CustomButton';
 
@@ -20,6 +21,16 @@ const LoginComponent = () => {
       <View>
         <Text style={styles.title}>Welcome to RNContacts</Text>
         <Text style={styles.subTitle}> Please login here</Text>
+
+        <Message
+          retry
+          retryFn={() => console.log('retry bitch')}
+          message="Invalid Credentials"
+          primary
+          onDismiss={() => {
+            console.log('HIT Dismiss');
+          }}
+        />
 
         <View style={styles.form}>
           <Input
