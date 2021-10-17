@@ -6,6 +6,7 @@ import {LOGIN} from '../../constants/routeNames';
 import Container from '../Container/Container';
 import Input from '../Input/Input';
 import CustomButton from '../CustomButton/CustomButton';
+import Message from '../Message/Message';
 
 const RegisterComponent = ({
   onSubmit,
@@ -16,7 +17,6 @@ const RegisterComponent = ({
   errors,
 }) => {
   const {navigate} = useNavigation();
-  console.log('REGISTRATION ERROR', error);
   return (
     <Container>
       <Image
@@ -30,7 +30,7 @@ const RegisterComponent = ({
         <Text style={styles.subTitle}>Create a free account</Text>
 
         <View style={styles.form}>
-          {error?.error && <Text>{error.error}</Text>}
+          {error?.error && <Message retry danger message={error?.error} />}
           <Input
             label="Username"
             placeholder="Enter Username"

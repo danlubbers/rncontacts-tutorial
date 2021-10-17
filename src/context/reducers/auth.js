@@ -2,31 +2,43 @@ import {
   REGISTER_LOADING,
   REGISTER_SUCCESS,
   REGISTER_FAIL,
+  LOGIN_LOADING,
+  LOGIN_SUCCESS,
+  LOGIN_FAIL,
   CLEAR_AUTH_STATE,
 } from '../../constants/actionTypes';
 
 const auth = (state, {type, payload}) => {
   switch (type) {
-    case REGISTER_LOADING:
-      console.log('state', state);
-      return {
-        ...state,
-        loading: true,
-      };
-
     case REGISTER_SUCCESS:
       return {
         ...state,
         loading: false,
         data: payload,
       };
+    case LOGIN_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        data: payload,
+        isLoggedIn: true,
+      };
+
+    case REGISTER_LOADING:
+    case LOGIN_LOADING:
+      return {
+        ...state,
+        loading: true,
+      };
 
     case REGISTER_FAIL:
+    case LOGIN_FAIL:
       return {
         ...state,
         loading: false,
         error: payload,
       };
+
     case CLEAR_AUTH_STATE:
       return {
         ...state,

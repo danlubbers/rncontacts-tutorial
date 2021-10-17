@@ -8,7 +8,15 @@ import Message from '../Message/Message';
 import Input from '../Input/Input';
 import CustomButton from '../CustomButton/CustomButton';
 
-const LoginComponent = () => {
+const LoginComponent = ({
+  onSubmit,
+  onChange,
+  onDismiss,
+  form,
+  loading,
+  error,
+  errors,
+}) => {
   const {navigate} = useNavigation();
   return (
     <Container>
@@ -22,33 +30,45 @@ const LoginComponent = () => {
         <Text style={styles.title}>Welcome to RNContacts</Text>
         <Text style={styles.subTitle}> Please login here</Text>
 
-        <Message
-          retry
-          retryFn={() => console.log('retry bitch')}
-          message="Invalid Credentials"
-          primary
-          onDismiss={() => {
-            console.log('HIT Dismiss');
-          }}
-        />
-
         <View style={styles.form}>
+          {/* When we CONNECT to the server and get ERRORS */}
+          {error && !error?.error && (
+            <Message
+              retry
+              onDismiss={() => {}}
+              danger
+              message="Invalid Credentials"
+            />
+          )}
+          {/* This error is when user is unable to connect to the server */}
+          {error?.error && (
+            <Message retry onDismiss={() => {}} danger message={error?.error} />
+          )}
           <Input
             label="Username"
-            placeholder="Enter Username"
-            // icon={<Text>HIDE</Text>}
             iconPosition="right"
+            placeholder="Enter Username"
+            onChangeText={value => {
+              onChange({name: 'username', value});
+            }}
           />
           <Input
             label="Password"
+            iconPosition="right"
+            icon={<Text>Show</Text>}
             placeholder="Enter Password"
             secureTextEntry={true}
-            icon={<Text>Show</Text>}
-            iconPosition="right"
-            // error={'This field is required!!!'}
+            onChangeText={value => {
+              onChange({name: 'password', value});
+            }}
           />
         </View>
-        <CustomButton secondary title="Submit" />
+        <CustomButton
+          title="Submit"
+          onPress={onSubmit}
+          loading={loading}
+          secondary
+        />
 
         <View style={styles.createSection}>
           <Text style={styles.infoText}>Need a new account</Text>

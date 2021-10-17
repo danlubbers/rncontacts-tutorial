@@ -22,9 +22,11 @@ const Register = () => {
 
   useFocusEffect(
     useCallback(() => {
-      if (authState.data || authState.error) {
-        clearAuthState()(authDispatch);
-      }
+      return () => {
+        if (authState.data || authState.error) {
+          clearAuthState()(authDispatch);
+        }
+      };
     }, [authState.data, authState.error, authDispatch]),
   );
 
