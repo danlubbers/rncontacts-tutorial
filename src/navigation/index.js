@@ -7,11 +7,12 @@ import {GlobalContext} from '../context/Provider';
 import {ActivityIndicator} from 'react-native';
 
 const AppNavContainer = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [authLoaded, setIsAuthLoaded] = useState(false);
   const {
     authState: {isLoggedIn},
   } = useContext(GlobalContext);
+
+  const [isAuthenticated, setIsAuthenticated] = useState(isLoggedIn);
+  const [authLoaded, setIsAuthLoaded] = useState(false);
 
   const getUser = async () => {
     try {
@@ -29,17 +30,13 @@ const AppNavContainer = () => {
 
   useEffect(() => {
     getUser();
-  }, []);
+  }, [isLoggedIn]);
 
   return (
     <>
       {authLoaded ? (
         <NavigationContainer>
-          {isLoggedIn || isAuthenticated ? (
-            <DrawerNavigator />
-          ) : (
-            <AuthNavigator />
-          )}
+          {isAuthenticated ? <DrawerNavigator /> : <AuthNavigator />}
         </NavigationContainer>
       ) : (
         <ActivityIndicator />

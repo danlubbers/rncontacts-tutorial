@@ -5,6 +5,7 @@ import {
   LOGIN_LOADING,
   LOGIN_SUCCESS,
   LOGIN_FAIL,
+  LOGOUT_USER,
   CLEAR_AUTH_STATE,
 } from '../../constants/actionTypes';
 
@@ -22,6 +23,14 @@ const auth = (state, {type, payload}) => {
         loading: false,
         data: payload,
         isLoggedIn: true,
+      };
+
+    case LOGOUT_USER:
+      return {
+        ...state,
+        loading: false,
+        data: null,
+        isLoggedIn: false,
       };
 
     case REGISTER_LOADING:

@@ -17,7 +17,7 @@ export default ({username, password}) =>
       .then(res => {
         console.log('LOGIN SUCCESS!!!', res.data);
         AsyncStorage.setItem('token', res.data.token);
-        AsyncStorage.setItem('user', JSON.stringify(res.data.user));
+        AsyncStorage.setItem('user', JSON.stringify(res.data));
         dispatch({type: LOGIN_SUCCESS, payload: res.data});
       })
       .catch(err => {
