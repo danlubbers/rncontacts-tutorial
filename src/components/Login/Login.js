@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 import styles from './LoginStyles';
 import {useNavigation} from '@react-navigation/native';
@@ -18,6 +18,8 @@ const LoginComponent = ({
   errors,
 }) => {
   const {navigate} = useNavigation();
+  const [isPasswordHidden, setIsPasswordHidden] = useState(true);
+
   return (
     <Container>
       <Image
@@ -54,10 +56,15 @@ const LoginComponent = ({
           />
           <Input
             label="Password"
-            iconPosition="right"
-            icon={<Text>Show</Text>}
             placeholder="Enter Password"
-            secureTextEntry={true}
+            icon={
+              <TouchableOpacity
+                onPress={() => setIsPasswordHidden(prev => !prev)}>
+                <Text>{isPasswordHidden ? 'Show' : 'Hide'}</Text>
+              </TouchableOpacity>
+            }
+            iconPosition="right"
+            secureTextEntry={isPasswordHidden}
             onChangeText={value => {
               onChange({name: 'password', value});
             }}
