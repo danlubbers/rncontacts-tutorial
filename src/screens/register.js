@@ -14,12 +14,6 @@ const Register = () => {
   const {navigate} = useNavigation();
   // console.log('AUTHSTATE', authState.error);
 
-  useEffect(() => {
-    if (authState.data) {
-      navigate(LOGIN);
-    }
-  }, [authState.data, navigate]);
-
   useFocusEffect(
     useCallback(() => {
       return () => {
@@ -87,7 +81,9 @@ const Register = () => {
       Object.values(form).every(item => item.trim().length > 0) &&
       Object.values(errors).every(item => !item)
     ) {
-      registerContext(form)(authDispatch);
+      registerContext(form)(authDispatch)(response => {
+        navigate(LOGIN, {data: response});
+      });
     }
   };
 

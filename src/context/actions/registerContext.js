@@ -19,7 +19,8 @@ export default ({
     email,
     password,
   }) =>
-  dispatch => {
+  dispatch =>
+  onSuccess => {
     dispatch({type: REGISTER_LOADING});
     axiosInstance
       .post('api/auth/register', {
@@ -31,6 +32,7 @@ export default ({
       })
       .then(res => {
         dispatch({type: REGISTER_SUCCESS, payload: res.data});
+        onSuccess(res.data);
       })
       .catch(err => {
         dispatch({

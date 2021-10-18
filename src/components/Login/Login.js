@@ -16,6 +16,7 @@ const LoginComponent = ({
   loading,
   error,
   errors,
+  justSignedUp,
 }) => {
   const {navigate} = useNavigation();
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
@@ -33,6 +34,15 @@ const LoginComponent = ({
         <Text style={styles.subTitle}> Please login here</Text>
 
         <View style={styles.form}>
+          {justSignedUp && (
+            <Message
+              retry
+              onDismiss={() => {}}
+              success
+              message="Account created Successfully"
+            />
+          )}
+
           {/* When we CONNECT to the server and get ERRORS */}
           {error && !error?.error && (
             <Message
@@ -42,6 +52,7 @@ const LoginComponent = ({
               message="Invalid Credentials"
             />
           )}
+
           {/* This error is when user is unable to connect to the server */}
           {error?.error && (
             <Message retry onDismiss={() => {}} danger message={error?.error} />
@@ -50,6 +61,7 @@ const LoginComponent = ({
             label="Username"
             iconPosition="right"
             placeholder="Enter Username"
+            value={form.username || null}
             onChangeText={value => {
               onChange({name: 'username', value});
             }}
