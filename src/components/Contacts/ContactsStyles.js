@@ -59,4 +59,15 @@ export default StyleSheet.create({
     paddingVertical: 100,
     paddingHorizontal: 100,
   },
+  floatingActionBtn: {
+    position: 'absolute',
+    bottom: 45,
+    right: 15,
+    width: 55,
+    height: 55,
+    borderRadius: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'red',
+  },
 });

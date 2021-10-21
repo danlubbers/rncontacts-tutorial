@@ -6,12 +6,15 @@ import {
   FlatList,
   TouchableOpacity,
   ActivityIndicator,
+  TouchableOpacityComponent,
 } from 'react-native';
 import styles from './ContactsStyles';
 import colors from '../../assets/theme/colors';
 import AppModal from '../AppModal/AppModal';
 import Message from '../Message/Message';
 import Icon from '../Icon/Icon';
+import {useNavigation} from '@react-navigation/native';
+import {CREATE_CONTACT} from '../../constants/routeNames';
 
 const ContactsComponent = ({
   data,
@@ -19,7 +22,7 @@ const ContactsComponent = ({
   isModalVisible,
   setIsModalVisible,
 }) => {
-  console.log('CONTACTDATA', data);
+  const {navigate} = useNavigation();
   const ListEmptyComponent = () => {
     return (
       <View style={styles.listEmptyComponentContainer}>
@@ -63,40 +66,47 @@ const ContactsComponent = ({
     );
   };
   return (
-    <View style={styles.contactsContainer}>
-      <AppModal
-        title="My Profile!"
-        modalBody={
-          <View>
-            <Text>Modal Body</Text>
+    <>
+      <View style={styles.contactsContainer}>
+        <AppModal
+          title="My Profile!"
+          modalBody={
+            <View>
+              <Text>Modal Body</Text>
+            </View>
+          }
+          modalFooter={<></>}
+          isModalVisible={isModalVisible}
+          setIsModalVisible={setIsModalVisible}
+        />
+
+        {loading && (
+          <View style={styles.activityContainer}>
+            <ActivityIndicator color={colors.primary} size="large" />
           </View>
-        }
-        modalFooter={<></>}
-        isModalVisible={isModalVisible}
-        setIsModalVisible={setIsModalVisible}
-      />
+        )}
 
-      {loading && (
-        <View style={styles.activityContainer}>
-          <ActivityIndicator color={colors.primary} size="large" />
-        </View>
-      )}
-
-      {!loading && (
-        <View style={styles.flatListWrapper}>
-          <FlatList
-            data={data}
-            renderItem={renderItem}
-            ItemSeparatorComponent={() => (
-              <View style={{height: 1, backgroundColor: colors.grey}} />
-            )}
-            keyExtractor={item => String(item.id)}
-            ListEmptyComponent={ListEmptyComponent}
-            ListFooterComponent={<View style={styles.footerWrapper}></View>}
-          />
-        </View>
-      )}
-    </View>
+        {!loading && (
+          <View style={styles.flatListWrapper}>
+            <FlatList
+              data={data}
+              renderItem={renderItem}
+              ItemSeparatorComponent={() => (
+                <View style={{height: 1, backgroundColor: colors.grey}} />
+              )}
+              keyExtractor={item => String(item.id)}
+              ListEmptyComponent={ListEmptyComponent}
+              ListFooterComponent={<View style={styles.footerWrapper}></View>}
+            />
+          </View>
+        )}
+      </View>
+      <TouchableOpacity
+        style={styles.floatingActionBtn}
+        onPress={() => navigate(CREATE_CONTACT)}>
+        <Icon name="plus" primary color={colors.white} size={21} />
+      </TouchableOpacity>
+    </>
   );
 };
 
