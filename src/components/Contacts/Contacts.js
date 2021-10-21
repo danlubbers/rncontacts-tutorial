@@ -29,29 +29,41 @@ const ContactsComponent = ({
   };
 
   const renderItem = ({item}) => {
-    const {contact_picture, first_name, last_name, phone_number} = item;
+    const {contact_picture, first_name, last_name, phone_number, country_code} =
+      item;
 
     return (
-      <TouchableOpacity style={styles.contactContainer}>
-        <View style={styles.contactWrapper}>
+      <TouchableOpacity style={styles.renderItemsContainer}>
+        <View style={styles.renderItemsWrapper}>
           {contact_picture ? (
             <Image style={styles.image} source={{uri: contact_picture}} />
           ) : (
-            <View style={styles.noImage} />
+            <View style={styles.noImage}>
+              <Text style={([styles.name], {color: colors.white})}>
+                {first_name[0]}
+              </Text>
+              <Text style={([styles.name], {color: colors.white})}>
+                {last_name[0]}
+              </Text>
+            </View>
           )}
-
-          <View style={styles.nameWrapper}>
-            <Text>{first_name}</Text>
-            <Text>{last_name}</Text>
-            <Text>{phone_number}</Text>
+          <View style={styles.infoWraper}>
+            <View style={styles.nameWrapper}>
+              <Text style={styles.name}>{first_name}</Text>
+              <Text style={styles.name}>{last_name}</Text>
+            </View>
+            <Text
+              style={
+                styles.phoneNumber
+              }>{`${country_code} ${phone_number}`}</Text>
           </View>
         </View>
-        <Icon name="right" type="ant" />
+        <Icon name="right" type="ant" size={17} color={colors.grey} />
       </TouchableOpacity>
     );
   };
   return (
-    <View>
+    <View style={styles.contactsContainer}>
       <AppModal
         title="My Profile!"
         modalBody={
@@ -75,6 +87,9 @@ const ContactsComponent = ({
           <FlatList
             data={data}
             renderItem={renderItem}
+            ItemSeparatorComponent={() => (
+              <View style={{height: 1, backgroundColor: colors.grey}} />
+            )}
             keyExtractor={item => String(item.id)}
             ListEmptyComponent={ListEmptyComponent}
             ListFooterComponent={<View style={styles.footerWrapper}></View>}
