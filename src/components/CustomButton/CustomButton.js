@@ -38,7 +38,7 @@ const CustomButton = ({
             style={
               ([styles.textTitle], {color: disabled ? 'black' : colors.white})
             }>
-            {title}
+            {loading ? 'Please wait...' : title}
           </Text>
         )}
       </View>
