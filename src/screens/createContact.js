@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useRef} from 'react';
 import {CONTACT_LIST} from '../constants/routeNames';
 import {useNavigation} from '@react-navigation/native';
 import {GlobalContext} from '../context/Provider';
@@ -13,6 +13,9 @@ const CreateContact = () => {
     },
     contactDispatch,
   } = useContext(GlobalContext);
+
+  const sheetRef = useRef();
+
   const [form, setForm] = useState({});
 
   const onChangeText = ({name, value}) => {
@@ -29,6 +32,18 @@ const CreateContact = () => {
     setForm({...form, isFavorite: !form.isFavorite});
   };
 
+  const openSheet = () => {
+    console.log('REF', sheetRef.current.open());
+    if (sheetRef.current) {
+      sheetRef.current.open;
+    }
+  };
+  const closeSheet = () => {
+    if (sheetRef.current) {
+      sheetRef.current.close();
+    }
+  };
+
   return (
     <CreateContactComponent
       onChangeText={onChangeText}
@@ -38,6 +53,9 @@ const CreateContact = () => {
       loading={loading}
       error={error}
       toggleValueChange={toggleValueChange}
+      sheetRef={sheetRef}
+      openSheet={openSheet}
+      closeSheet={closeSheet}
     />
   );
 };
