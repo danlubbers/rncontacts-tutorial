@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  Image,
-  Switch,
-  SwitchComponent,
-  TouchableOpacity,
-} from 'react-native';
+import {View, Text, Image, Switch, TouchableOpacity} from 'react-native';
 import styles from './CreateContactStyles';
 import Container from '../Container/Container';
 import Input from '../Input/Input';
@@ -26,13 +19,15 @@ const CreateContact = ({
   toggleValueChange,
   sheetRef,
   openSheet,
-  closeSheet,
+  onFileSelected,
 }) => {
-  console.log(error);
   return (
     <View style={styles.createContactContainer}>
       <Container>
-        <Image style={styles.contactImage} source={{uri: DEFAULT_IMAGE_URI}} />
+        <Image
+          style={styles.contactImage}
+          source={{uri: form.sourceURL || DEFAULT_IMAGE_URI}}
+        />
         <TouchableOpacity onPress={openSheet}>
           <Text style={styles.imageText}>Upload Image</Text>
         </TouchableOpacity>
@@ -98,7 +93,7 @@ const CreateContact = ({
           disabled={loading}
         />
       </Container>
-      <UploadImage ref={sheetRef} />
+      <UploadImage ref={sheetRef} onFileSelected={onFileSelected} />
     </View>
   );
 };

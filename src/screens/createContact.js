@@ -33,15 +33,19 @@ const CreateContact = () => {
   };
 
   const openSheet = () => {
-    console.log('REF', sheetRef.current.open());
     if (sheetRef.current) {
-      sheetRef.current.open;
+      sheetRef.current.open();
     }
   };
   const closeSheet = () => {
     if (sheetRef.current) {
       sheetRef.current.close();
     }
+  };
+
+  const onFileSelected = image => {
+    closeSheet();
+    setForm({...form, sourceURL: image.sourceURL});
   };
 
   return (
@@ -56,6 +60,7 @@ const CreateContact = () => {
       sheetRef={sheetRef}
       openSheet={openSheet}
       closeSheet={closeSheet}
+      onFileSelected={onFileSelected}
     />
   );
 };

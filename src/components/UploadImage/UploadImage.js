@@ -4,20 +4,47 @@ import styles from './UploadImageStyles';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import Icon from '../Icon/Icon';
 import colors from '../../assets/theme/colors';
+import ImagePicker from 'react-native-image-crop-picker';
 
-const UploadImage = forwardRef(({}, ref) => {
+const UploadImage = forwardRef(({onFileSelected}, ref) => {
   const options = [
     {
       name: 'Take from camera',
       icon: (
-        <Icon name="camera" color={colors.grey} size={21} onPress={() => {}} />
+        <Icon
+          name="camera"
+          color={colors.grey}
+          size={21}
+          onPress={() => {
+            ImagePicker.openCamera({
+              width: 300,
+              height: 300,
+              cropping: true,
+              freeStyleCropEnabled: true,
+            })
+              .then(images => {
+                onFileSelected(images);
+              })
+              .catch(err => console.error(err));
+          }}
+        />
       ),
     },
     {
       name: 'Choose from gallery',
-      icon: (
-        <Icon name="image" color={colors.grey} size={21} onPress={() => {}} />
-      ),
+      icon: <Icon name="image" color={colors.grey} size={21} />,
+      onPress: () => {
+        ImagePicker.openPicker({
+          width: 300,
+          height: 300,
+          cropping: true,
+          freeStyleCropEnabled: true,
+        })
+          .then(images => {
+            onFileSelected(images);
+          })
+          .catch(err => console.error(err));
+      },
     },
   ];
   return (
@@ -25,7 +52,7 @@ const UploadImage = forwardRef(({}, ref) => {
       ref={ref}
       height={175}
       openDuration={250}
-      closeOnDragDown
+      closeOnDragDown={true}
       customStyles={{
         container: {
           borderTopRightRadius: 20,
@@ -35,7 +62,10 @@ const UploadImage = forwardRef(({}, ref) => {
       <View style={styles.uploadImageWrapper}>
         {options.map(({name, icon, onPress}) => {
           return (
-            <TouchableOpacity key={name} style={styles.infoWrapper}>
+            <TouchableOpacity
+              key={name}
+              style={styles.infoWrapper}
+              onPress={onPress}>
               {icon}
               <Text style={styles.imageText}>{name}</Text>
             </TouchableOpacity>
