@@ -17,19 +17,18 @@ const Settings = ({
         title="Sort By"
         modalBody={preferences.map(({name, selected, onPress}) => {
           return (
-            <View>
-              <TouchableOpacity
-                style={styles.sortByTextWrapper}
-                onPress={onPress}>
-                {selected && <Icon name="check" type="material" size={17} />}
-                <Text
-                  style={
-                    ([styles.sortByText], {paddingLeft: selected ? 15 : 32})
-                  }>
-                  {name}
-                </Text>
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity
+              key={name}
+              style={styles.sortByTextWrapper}
+              onPress={onPress}>
+              {selected && <Icon name="check" type="material" size={17} />}
+              <Text
+                style={
+                  ([styles.sortByText], {paddingLeft: selected ? 15 : 32})
+                }>
+                {name}
+              </Text>
+            </TouchableOpacity>
           );
         })}
         modalFooter={<></>}

@@ -48,6 +48,7 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   name: {
+    paddingRight: 5,
     fontSize: 17,
   },
   phoneNumber: {

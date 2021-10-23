@@ -57,7 +57,7 @@ const Settings = () => {
     const user = await AsyncStorage.getItem('user');
     const sortBy = await AsyncStorage.getItem('sortBy');
     setEmail(JSON.parse(user).user.email);
-    setIsSorted();
+    setIsSorted(sortBy);
   };
 
   useEffect(() => {
