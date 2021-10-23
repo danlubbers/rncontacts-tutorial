@@ -18,4 +18,13 @@ export default StyleSheet.create({
     fontSize: 14,
     opacity: 0.5,
   },
+  sortByTextWrapper: {
+    paddingVertical: 5,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  sortByText: {
+    fontSize: 17,
+    paddingLeft: 15,
+  },
 });
