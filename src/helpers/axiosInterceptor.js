@@ -1,6 +1,8 @@
 import axios from 'axios';
 import envs from '../config/env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {navigate} from '../navigation/RootNavigator';
+import {LOGOUT} from '../constants/routeNames';
 
 let headers = {};
 
@@ -20,6 +22,28 @@ axiosInstance.interceptors.request.use(
   },
   error => {
     return Promise.reject(error);
+  },
+);
+
+axiosInstance.interceptors.response.use(
+  async response =>
+    new Promise((resolve, reject) => {
+      resolve(response);
+    }),
+
+  error => {
+    if (!error.response) {
+      return new Promise((resolve, reject) => {
+        reject(error);
+      });
+    }
+    if (error.response.status === 403) {
+      navigate(LOGOUT, {tokenExpired: true});
+    } else {
+      return new Promise((resolve, reject) => {
+        reject(error);
+      });
+    }
   },
 );
 

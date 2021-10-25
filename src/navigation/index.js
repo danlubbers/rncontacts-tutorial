@@ -5,7 +5,7 @@ import AuthNavigator from './AuthNavigator';
 import DrawerNavigator from './DrawerNavigator';
 import {GlobalContext} from '../context/Provider';
 import {ActivityIndicator} from 'react-native';
-import navigationRef from './RootNavigator';
+import {navigationRef} from './RootNavigator';
 
 const AppNavContainer = () => {
   const {
