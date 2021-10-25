@@ -12,7 +12,7 @@ const Login = () => {
 
   useEffect(() => {
     if (params?.data) {
-      console.log('PARAMS', params);
+      // console.log('PARAMS', params);
       setJustSignedUp(true);
       setForm({...form, username: params.data.username});
     }

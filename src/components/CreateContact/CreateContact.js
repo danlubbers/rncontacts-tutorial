@@ -20,13 +20,14 @@ const CreateContact = ({
   sheetRef,
   openSheet,
   onFileSelected,
+  localFile,
 }) => {
   return (
     <View style={styles.createContactContainer}>
       <Container>
         <Image
           style={styles.contactImage}
-          source={{uri: form.sourceURL || DEFAULT_IMAGE_URI}}
+          source={{uri: localFile?.path || DEFAULT_IMAGE_URI}}
         />
         <TouchableOpacity onPress={openSheet}>
           <Text style={styles.imageText}>Upload Image</Text>

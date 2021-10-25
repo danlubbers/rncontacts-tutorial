@@ -26,7 +26,7 @@ axiosInstance.interceptors.request.use(
 );
 
 axiosInstance.interceptors.response.use(
-  async response =>
+  response =>
     new Promise((resolve, reject) => {
       resolve(response);
     }),

@@ -6,13 +6,13 @@ import {
 import axiosInstance from '../../helpers/axiosInterceptor';
 
 export default form => dispatch => onSuccess => {
-  console.log('FORM', form);
+  console.log('!!!FORM!!!', form);
   const requestPayload = {
     country_code: form.country_code || '',
     first_name: form.firstName || '',
     last_name: form.lastName || '',
     phone_number: form.phoneNumber || '',
-    contact_picture: form.contact_picture || null,
+    contact_picture: form.contactPicture || null,
     is_favorite: form.isFavorite || false,
   };
   dispatch({type: CREATE_CONTACT_LOADING});
