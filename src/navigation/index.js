@@ -5,6 +5,7 @@ import AuthNavigator from './AuthNavigator';
 import DrawerNavigator from './DrawerNavigator';
 import {GlobalContext} from '../context/Provider';
 import {ActivityIndicator} from 'react-native';
+import navigationRef from './RootNavigator';
 
 const AppNavContainer = () => {
   const {
@@ -35,7 +36,7 @@ const AppNavContainer = () => {
   return (
     <>
       {authLoaded ? (
-        <NavigationContainer>
+        <NavigationContainer ref={navigationRef}>
           {isAuthenticated ? <DrawerNavigator /> : <AuthNavigator />}
         </NavigationContainer>
       ) : (
