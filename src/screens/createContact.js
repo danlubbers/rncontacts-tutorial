@@ -7,6 +7,7 @@ import CreateContactComponent from '../components/CreateContact/CreateContact';
 import uploadImage from '../helpers/uploadImage';
 
 const CreateContact = () => {
+  const sheetRef = useRef();
   const {navigate} = useNavigation();
   const {
     contactState: {
@@ -14,8 +15,6 @@ const CreateContact = () => {
     },
     contactDispatch,
   } = useContext(GlobalContext);
-
-  const sheetRef = useRef();
 
   const [form, setForm] = useState({});
   const [isUploading, setIsUploading] = useState(false);
