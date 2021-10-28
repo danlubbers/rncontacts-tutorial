@@ -1,5 +1,5 @@
 import React, {useEffect, useContext} from 'react';
-import {View, TouchableOpacity} from 'react-native';
+import {View, TouchableOpacity, Alert, ActivityIndicator} from 'react-native';
 import Icon from '../components/Icon/Icon';
 import {useRoute, useNavigation} from '@react-navigation/native';
 import ContactDetailsComponent from '../components/ContactDetails/ContactDetails';
@@ -11,7 +11,12 @@ import {CONTACT_LIST} from '../constants/routeNames';
 const ContactDetails = () => {
   const {params} = useRoute();
   const {setOptions, navigate} = useNavigation();
-  const {contactState, contactDispatch} = useContext(GlobalContext);
+  const {
+    contactState: {
+      deleteContact: {loading},
+    },
+    contactDispatch,
+  } = useContext(GlobalContext);
 
   useEffect(() => {
     if (params.item) {
@@ -31,23 +36,39 @@ const ContactDetails = () => {
               <TouchableOpacity
                 style={{paddingLeft: 10}}
                 onPress={() => {
-                  deleteContact(params.item.id)(contactDispatch)(() => {
-                    navigate(CONTACT_LIST);
-                  });
+                  Alert.alert(
+                    'Delete!',
+                    `Are you sure you want to delete ${params.item.first_name} ${params.item.last_name}?`,
+                    [
+                      {text: 'Cancel', onPress: () => {}},
+                      {
+                        text: 'OK',
+                        onPress: () => {
+                          deleteContact(params.item.id)(contactDispatch)(() => {
+                            navigate(CONTACT_LIST);
+                          });
+                        },
+                      },
+                    ],
+                  );
                 }}>
-                <Icon
-                  name="delete"
-                  type="material"
-                  size={21}
-                  color={colors.grey}
-                />
+                {loading ? (
+                  <ActivityIndicator />
+                ) : (
+                  <Icon
+                    name="delete"
+                    type="material"
+                    size={21}
+                    color={colors.grey}
+                  />
+                )}
               </TouchableOpacity>
             </View>
           );
         },
       });
     }
-  }, [params.item]);
+  }, [params.item, loading]);
 
   return <ContactDetailsComponent contactDetails={params.item} />;
 };

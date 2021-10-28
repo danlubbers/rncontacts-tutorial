@@ -24,8 +24,8 @@ const contacts = (state, {type, payload}) => {
     case GET_CONTACTS_LOADING:
       return {
         ...state,
-        deleteContact: {
-          ...state.deleteContact,
+        getContacts: {
+          ...state.getContacts,
           loading: true,
           error: null,
         },
@@ -33,8 +33,8 @@ const contacts = (state, {type, payload}) => {
     case DELETE_CONTACT_LOADING:
       return {
         ...state,
-        getContacts: {
-          ...state.getContacts,
+        deleteContact: {
+          ...state.deleteContact,
           loading: true,
           error: null,
         },
