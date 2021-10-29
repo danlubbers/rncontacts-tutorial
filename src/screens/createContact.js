@@ -1,15 +1,16 @@
 import React, {useState, useContext, useRef, useEffect} from 'react';
-import {CONTACT_LIST} from '../constants/routeNames';
+import {CONTACT_LIST, CONTACT_DETAIL} from '../constants/routeNames';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {GlobalContext} from '../context/Provider';
 import createContact from '../context/actions/createContact';
+import editContact from '../context/actions/editContact';
 import CreateContactComponent from '../components/CreateContact/CreateContact';
 import uploadImage from '../helpers/uploadImage';
 import countryCodes from '../utils/countryCodes';
 
 const CreateContact = () => {
   const sheetRef = useRef();
-  const {navigate} = useNavigation();
+  const {navigate, setOptions} = useNavigation();
   const {params} = useRoute();
   const {
     contactState: {
@@ -23,6 +24,10 @@ const CreateContact = () => {
   const [localFile, setLocalFile] = useState(null);
 
   useEffect(() => {
+    setOptions({
+      title: 'Update Contact',
+    });
+
     // console.log(params?.contactDetails);
     if (params?.contactDetails) {
       const {
@@ -58,6 +63,7 @@ const CreateContact = () => {
       if (params?.contactDetails.contact_picture) {
         setLocalFile(params?.contactDetails.contact_picture);
       }
+      // console.log('EFFECT LOCAL', localFile);
     }
   }, []);
 
@@ -68,23 +74,50 @@ const CreateContact = () => {
   const onSubmit = () => {
     // console.log('createCONTACT FORM', form);
 
-    if (localFile?.size) {
-      // console.log('WE HAVE THE LOCAL FILE', localFile);
-      setIsUploading(true);
-      uploadImage(localFile)(url => {
-        setIsUploading(false);
+    if (params?.contactDetails) {
+      console.log(localFile?.size);
+      if (localFile?.size) {
+        console.log('WE HAVE THE LOCAL FILE', localFile);
+        setIsUploading(true);
+        uploadImage(localFile)(url => {
+          setIsUploading(false);
 
-        createContact({...form, contactPicture: url})(contactDispatch)(() => {
+          editContact(
+            {...form, contactPicture: url},
+            params?.contactDetails.id,
+          )(contactDispatch)(item => {
+            navigate(CONTACT_DETAIL, {item});
+          });
+        })(err => {
+          console.log('err', err);
+          setIsUploading(false);
+        });
+      } else {
+        editContact(form, params?.contactDetails.id)(contactDispatch)(item => {
+          console.log('OnSUCCESS ITEM', item);
+          return navigate(CONTACT_DETAIL, {item});
+        });
+      }
+    } else {
+      if (localFile?.size) {
+        console.log('WE HAVE THE LOCAL FILE without an image', localFile);
+        setIsUploading(true);
+        uploadImage(localFile)(url => {
+          setIsUploading(false);
+
+          createContact({...form, contactPicture: url})(contactDispatch)(() => {
+            navigate(CONTACT_LIST);
+          });
+        })(err => {
+          console.log('err', err);
+          setIsUploading(false);
+        });
+      } else {
+        createContact(form)(contactDispatch)(() => {
           navigate(CONTACT_LIST);
         });
-      })(err => {
-        console.log('err', err);
-        setIsUploading(false);
-      });
+      }
     }
-    createContact(form)(contactDispatch)(() => {
-      navigate(CONTACT_LIST);
-    });
   };
 
   const toggleValueChange = () => {

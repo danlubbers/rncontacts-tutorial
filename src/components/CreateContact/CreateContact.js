@@ -27,7 +27,9 @@ const CreateContact = ({
       <Container>
         <Image
           style={styles.contactImage}
-          source={{uri: localFile?.path || DEFAULT_IMAGE_URI}}
+          source={{
+            uri: localFile?.path || localFile || DEFAULT_IMAGE_URI,
+          }}
         />
         <TouchableOpacity onPress={openSheet}>
           <Text style={styles.imageText}>Upload Image</Text>

@@ -2,6 +2,9 @@ import {
   CREATE_CONTACT_LOADING,
   CREATE_CONTACT_SUCCESS,
   CREATE_CONTACT_FAIL,
+  EDIT_CONTACT_LOADING,
+  EDIT_CONTACT_SUCCESS,
+  EDIT_CONTACT_FAIL,
   GET_CONTACTS_LOADING,
   GET_CONTACTS_SUCCESS,
   GET_CONTACTS_FAIL,
@@ -13,6 +16,15 @@ import {
 const contacts = (state, {type, payload}) => {
   switch (type) {
     case CREATE_CONTACT_LOADING:
+      return {
+        ...state,
+        createContact: {
+          ...state.createContact,
+          loading: true,
+          error: null,
+        },
+      };
+    case EDIT_CONTACT_LOADING:
       return {
         ...state,
         createContact: {
@@ -56,6 +68,28 @@ const contacts = (state, {type, payload}) => {
           error: null,
         },
       };
+    case EDIT_CONTACT_SUCCESS:
+      return {
+        ...state,
+        createContact: {
+          ...state.createContact,
+          loading: false,
+          data: payload,
+          error: null,
+        },
+        getContacts: {
+          ...state.getContacts,
+          loading: false,
+          data: state.getContacts.data.map(item => {
+            if (item.id === payload.id) {
+              return payload;
+            } else {
+              return item;
+            }
+          }),
+          error: null,
+        },
+      };
     case GET_CONTACTS_SUCCESS:
       return {
         ...state,
@@ -83,6 +117,15 @@ const contacts = (state, {type, payload}) => {
       };
 
     case CREATE_CONTACT_FAIL:
+      return {
+        ...state,
+        createContact: {
+          ...state.createContact,
+          loading: false,
+          error: payload,
+        },
+      };
+    case EDIT_CONTACT_FAIL:
       return {
         ...state,
         createContact: {
