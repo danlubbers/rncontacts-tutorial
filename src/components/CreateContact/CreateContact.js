@@ -34,6 +34,7 @@ const CreateContact = ({
         </TouchableOpacity>
         <Input
           label="First Name"
+          value={form.firstName || ''}
           placeholder="Enter First Name"
           onChangeText={value => {
             onChangeText({name: 'firstName', value: value});
@@ -42,6 +43,7 @@ const CreateContact = ({
         />
         <Input
           label="Last Name"
+          value={form.lastName || ''}
           placeholder="Enter Last Name"
           onChangeText={value => {
             onChangeText({name: 'lastName', value: value});
@@ -50,6 +52,7 @@ const CreateContact = ({
         />
         <Input
           label="Phone Number"
+          value={form.phoneNumber || ''}
           placeholder="Enter Phone Number"
           icon={
             <CountryPicker

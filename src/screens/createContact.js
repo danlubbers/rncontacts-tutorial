@@ -1,14 +1,16 @@
 import React, {useState, useContext, useRef, useEffect} from 'react';
 import {CONTACT_LIST} from '../constants/routeNames';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {GlobalContext} from '../context/Provider';
 import createContact from '../context/actions/createContact';
 import CreateContactComponent from '../components/CreateContact/CreateContact';
 import uploadImage from '../helpers/uploadImage';
+import countryCodes from '../utils/countryCodes';
 
 const CreateContact = () => {
   const sheetRef = useRef();
   const {navigate} = useNavigation();
+  const {params} = useRoute();
   const {
     contactState: {
       createContact: {loading, error},
@@ -19,6 +21,45 @@ const CreateContact = () => {
   const [form, setForm] = useState({});
   const [isUploading, setIsUploading] = useState(false);
   const [localFile, setLocalFile] = useState(null);
+
+  useEffect(() => {
+    // console.log(params?.contactDetails);
+    if (params?.contactDetails) {
+      const {
+        first_name: firstName,
+        last_name: lastName,
+        phone_number: phoneNumber,
+        is_favorite: isFavorite,
+        country_code: countryCode,
+      } = params?.contactDetails;
+      setForm(prev => {
+        return {
+          ...prev,
+          firstName,
+          lastName,
+          phoneNumber,
+          isFavorite,
+          countryCode,
+        };
+      });
+
+      const country = countryCodes.find(item => {
+        return item.value.replace('+', '') === countryCode;
+      });
+
+      if (country) {
+        setForm(prev => {
+          return {
+            ...prev,
+            cca2: country.key.toUpperCase(),
+          };
+        });
+      }
+      if (params?.contactDetails.contact_picture) {
+        setLocalFile(params?.contactDetails.contact_picture);
+      }
+    }
+  }, []);
 
   const onChangeText = ({name, value}) => {
     setForm({...form, [name]: value});
