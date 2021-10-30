@@ -4,20 +4,31 @@ import styles from './ContactDetailsStyles';
 import colors from '../../assets/theme/colors';
 import ImageComponent from '../Image/Image';
 import CustomButton from '../CustomButton/CustomButton';
+import UploadImage from '../UploadImage/UploadImage';
 import Icon from '../Icon/Icon';
 import {useNavigation} from '@react-navigation/native';
 import {CREATE_CONTACT} from '../../constants/routeNames';
 import {DEFAULT_IMAGE_URI} from '../../constants/genericConstants';
 
-const ContactDetails = ({contactDetails, localFile}) => {
+const ContactDetails = ({
+  contactDetails,
+  localFile,
+  sheetRef,
+  openSheet,
+  onFileSelected,
+  isUploadingImage,
+  uploadSucceeded,
+}) => {
   const {navigate} = useNavigation();
   const {contact_picture, first_name, last_name, country_code, phone_number} =
     contactDetails;
   return (
     <ScrollView style={styles.scrollViewContainer}>
       <View style={styles.contactDetailsContainer}>
-        {contact_picture && <ImageComponent src={contact_picture} />}
-        {!contact_picture && (
+        {(contact_picture || uploadSucceeded) && (
+          <ImageComponent src={contact_picture || localFile?.path} />
+        )}
+        {!contact_picture && !uploadSucceeded && (
           <View style={styles.addImageWrapper}>
             <Image
               style={styles.contactImage}
@@ -25,8 +36,13 @@ const ContactDetails = ({contactDetails, localFile}) => {
                 uri: localFile?.path || DEFAULT_IMAGE_URI,
               }}
             />
-            <TouchableOpacity onPress={() => {}}>
-              <Text style={styles.addImageText}>Add Image</Text>
+            <TouchableOpacity
+              onPress={() => {
+                openSheet();
+              }}>
+              <Text style={styles.addImageText}>
+                {isUploadingImage ? 'updating...' : 'Add Image'}
+              </Text>
             </TouchableOpacity>
           </View>
         )}
@@ -109,6 +125,8 @@ const ContactDetails = ({contactDetails, localFile}) => {
           />
         </View>
       </View>
+
+      <UploadImage ref={sheetRef} onFileSelected={onFileSelected} />
     </ScrollView>
   );
 };

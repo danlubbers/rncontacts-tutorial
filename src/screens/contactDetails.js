@@ -1,4 +1,4 @@
-import React, {useEffect, useContext} from 'react';
+import React, {useState, useEffect, useContext, useRef} from 'react';
 import {View, TouchableOpacity, Alert, ActivityIndicator} from 'react-native';
 import Icon from '../components/Icon/Icon';
 import {useRoute, useNavigation} from '@react-navigation/native';
@@ -6,9 +6,12 @@ import ContactDetailsComponent from '../components/ContactDetails/ContactDetails
 import colors from '../assets/theme/colors';
 import {GlobalContext} from '../context/Provider';
 import deleteContact from '../context/actions/deleteContact';
+import editContact from '../context/actions/editContact';
+import uploadImage from '../helpers/uploadImage';
 import {CONTACT_LIST} from '../constants/routeNames';
 
 const ContactDetails = () => {
+  const sheetRef = useRef();
   const {params} = useRoute();
   const {setOptions, navigate} = useNavigation();
   const {
@@ -17,6 +20,10 @@ const ContactDetails = () => {
     },
     contactDispatch,
   } = useContext(GlobalContext);
+
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const [uploadSucceeded, setUploadSucceeded] = useState(false);
+  const [localFile, setLocalFile] = useState(null);
 
   useEffect(() => {
     if (params.item) {
@@ -70,7 +77,62 @@ const ContactDetails = () => {
     }
   }, [params.item, loading]);
 
-  return <ContactDetailsComponent contactDetails={params.item} />;
+  const openSheet = () => {
+    if (sheetRef.current) {
+      sheetRef.current.open();
+    }
+  };
+  const closeSheet = () => {
+    if (sheetRef.current) {
+      sheetRef.current.close();
+    }
+  };
+
+  const onFileSelected = image => {
+    closeSheet();
+    setLocalFile(image);
+    setIsUploadingImage(true);
+
+    uploadImage(image)(url => {
+      const {
+        first_name: firstName,
+        last_name: lastName,
+        phone_number: phoneNumber,
+        is_favorite: isFavorite,
+        country_code: cca2,
+      } = params.item;
+
+      editContact(
+        {
+          firstName,
+          lastName,
+          phoneNumber,
+          isFavorite,
+          cca2,
+          contactPicture: url,
+        },
+        params?.item.id,
+      )(contactDispatch)(item => {
+        setIsUploadingImage(false);
+        setUploadSucceeded(true);
+      });
+    })(err => {
+      console.log('err', err);
+      setIsUploadingImage(false);
+    });
+  };
+
+  return (
+    <ContactDetailsComponent
+      contactDetails={params.item}
+      sheetRef={sheetRef}
+      openSheet={openSheet}
+      onFileSelected={onFileSelected}
+      localFile={localFile}
+      isUploadingImage={isUploadingImage}
+      uploadSucceeded={uploadSucceeded}
+    />
+  );
 };
 
 export default ContactDetails;

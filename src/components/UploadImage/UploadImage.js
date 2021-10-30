@@ -41,6 +41,7 @@ const UploadImage = forwardRef(({onFileSelected}, ref) => {
           freeStyleCropEnabled: true,
         })
           .then(images => {
+            // console.log(`images`, images);
             onFileSelected(images);
           })
           .catch(err => console.error(err));
