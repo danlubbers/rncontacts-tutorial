@@ -6,7 +6,7 @@ import {
 import axiosInstance from '../../helpers/axiosInterceptor';
 
 export default (form, id) => dispatch => onSuccess => {
-  console.log('!!!FORM!!!', form);
+  // console.log('!!!FORM!!!', form);
   const requestPayload = {
     country_code: form.country_code || form.cca2 || '',
     first_name: form.firstName || '',
@@ -15,7 +15,7 @@ export default (form, id) => dispatch => onSuccess => {
     contact_picture: form.contactPicture || null,
     is_favorite: form.isFavorite || false,
   };
-  console.log('requestPayload', requestPayload);
+  // console.log('requestPayload', requestPayload);
   dispatch({type: EDIT_CONTACT_LOADING});
   axiosInstance
     .put(`api/contacts/${id}`, requestPayload)

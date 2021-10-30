@@ -6,7 +6,7 @@ import {
 import axiosInstance from '../../helpers/axiosInterceptor';
 
 export default form => dispatch => onSuccess => {
-  console.log('!!!FORM!!!', form);
+  // console.log('!!!FORM!!!', form);
   const requestPayload = {
     country_code: form.country_code || '',
     first_name: form.firstName || '',

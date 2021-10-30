@@ -8,6 +8,19 @@ export default StyleSheet.create({
   contactDetailsContainer: {
     flex: 1,
   },
+  addImageWrapper: {
+    paddingVertical: 21,
+    alignItems: 'center',
+  },
+  contactImage: {
+    width: 150,
+    height: 150,
+    alignSelf: 'center',
+    borderRadius: 100,
+  },
+  addImageText: {
+    color: colors.primary,
+  },
   infoWrapper: {
     padding: 20,
   },

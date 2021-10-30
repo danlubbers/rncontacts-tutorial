@@ -75,9 +75,9 @@ const CreateContact = () => {
     // console.log('createCONTACT FORM', form);
 
     if (params?.contactDetails) {
-      console.log(localFile?.size);
+      // console.log(localFile?.size);
       if (localFile?.size) {
-        console.log('WE HAVE THE LOCAL FILE', localFile);
+        // console.log('WE HAVE THE LOCAL FILE', localFile);
         setIsUploading(true);
         uploadImage(localFile)(url => {
           setIsUploading(false);
@@ -94,13 +94,13 @@ const CreateContact = () => {
         });
       } else {
         editContact(form, params?.contactDetails.id)(contactDispatch)(item => {
-          console.log('OnSUCCESS ITEM', item);
+          // console.log('OnSUCCESS ITEM', item);
           return navigate(CONTACT_DETAIL, {item});
         });
       }
     } else {
       if (localFile?.size) {
-        console.log('WE HAVE THE LOCAL FILE without an image', localFile);
+        // console.log('WE HAVE THE LOCAL FILE without an image', localFile);
         setIsUploading(true);
         uploadImage(localFile)(url => {
           setIsUploading(false);

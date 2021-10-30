@@ -42,25 +42,25 @@ const Contacts = () => {
 
   useEffect(() => {
     const prevContactList = contactsRef.current;
-    console.log('prevContactList', prevContactList.length);
+    // console.log('prevContactList', prevContactList.length);
 
     contactsRef.current = contactState.getContacts.data;
 
     const newList = contactsRef.current;
-    console.log('newList', newList.length);
+    // console.log('newList', newList.length);
 
     if (newList.length - prevContactList === 1) {
       const newContact = newList.find(
         item =>
           !prevContactList
             .map(contact => {
-              console.log(contact.id, item.id);
+              // console.log(contact.id, item.id);
               contact.id;
             })
             .includes(item.id),
       );
       navigate(CONTACT_DETAIL, {item: newContact});
-      console.log('NewCONTACT', newContact);
+      // console.log('NewCONTACT', newContact);
     }
   }, [contactState.getContacts.data.length]);
 
