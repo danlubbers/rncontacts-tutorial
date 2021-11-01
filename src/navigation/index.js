@@ -6,6 +6,7 @@ import DrawerNavigator from './DrawerNavigator';
 import {GlobalContext} from '../context/Provider';
 import {ActivityIndicator} from 'react-native';
 import {navigationRef} from './RootNavigator';
+import SplashScreen from 'react-native-splash-screen';
 
 const AppNavContainer = () => {
   const {
@@ -32,6 +33,12 @@ const AppNavContainer = () => {
   useEffect(() => {
     getUser();
   }, [isLoggedIn]);
+
+  useEffect(() => {
+    if (authLoaded) {
+      SplashScreen.hide();
+    }
+  }, [authLoaded]);
 
   return (
     <>
